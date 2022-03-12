@@ -24,7 +24,6 @@ import (
 )
 
 var (
-	errNotFound            = fmt.Errorf("secret value not found")
 	errMissingStore        = fmt.Errorf("missing store provider")
 	errMissingFakeProvider = fmt.Errorf("missing store provider fake")
 	errMissingKeyField     = "key must be set in data %v"
@@ -69,7 +68,7 @@ func (p *Provider) GetSecret(ctx context.Context, ref esv1beta1.ExternalSecretDa
 			return []byte(data.Value), nil
 		}
 	}
-	return nil, errNotFound
+	return nil, esv1beta1.DeleteSecretErr
 }
 
 // GetSecretMap returns multiple k/v pairs from the provider.
@@ -80,7 +79,7 @@ func (p *Provider) GetSecretMap(ctx context.Context, ref esv1beta1.ExternalSecre
 		}
 		return convertMap(data.ValueMap), nil
 	}
-	return nil, errNotFound
+	return nil, esv1beta1.DeleteSecretErr
 }
 
 func convertMap(in map[string]string) map[string][]byte {

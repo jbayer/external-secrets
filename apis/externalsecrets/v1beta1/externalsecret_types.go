@@ -35,27 +35,27 @@ type ExternalSecretCreationPolicy string
 
 const (
 	// Owner creates the Secret and sets .metadata.ownerReferences to the ExternalSecret resource.
-	Owner ExternalSecretCreationPolicy = "Owner"
+	CreatePolicyOwner ExternalSecretCreationPolicy = "Owner"
 
 	// Merge does not create the Secret, but merges the data fields to the Secret.
-	Merge ExternalSecretCreationPolicy = "Merge"
+	CreatePolicyMerge ExternalSecretCreationPolicy = "Merge"
 
 	// None does not create a Secret (future use with injector).
-	None ExternalSecretCreationPolicy = "None"
+	CreatePolicyNone ExternalSecretCreationPolicy = "None"
 )
 
 // ExternalSecretDeletionPolicy defines rules on how to delete the resulting Secret.
 type ExternalSecretDeletionPolicy string
 
 const (
-	// Owner creates the Secret and sets .metadata.ownerReferences to the ExternalSecret resource.
-	DeletionOwner ExternalSecretDeletionPolicy = "Owner"
+	// Delete deletes the secret if all provider secrets are deleted
+	DeletionPolicyDelete ExternalSecretDeletionPolicy = "Delete"
 
-	// Merge does not create the Secret, but merges the data fields to the Secret.
-	DeletionMerge ExternalSecretDeletionPolicy = "Merge"
+	// Merge removes keys in the secret, but not the secret itself
+	DeletionPolicyMerge ExternalSecretDeletionPolicy = "Merge"
 
-	// None does not create a Secret (future use with injector).
-	DeletionNone ExternalSecretDeletionPolicy = "None"
+	// None will retain the secret if it all provider secrets have been deleted
+	DeletionPolicyNone ExternalSecretDeletionPolicy = "None"
 )
 
 // ExternalSecretTemplateMetadata defines metadata fields for the Secret blueprint.

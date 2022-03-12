@@ -136,6 +136,9 @@ func (s *Provider) DeleteSecret(key string) {
 		SecretId:                   aws.String(key),
 		ForceDeleteWithoutRecovery: aws.Bool(true),
 	})
+	if _, ok := err.(*secretsmanager.ResourceNotFoundException); ok {
+		return
+	}
 	Expect(err).ToNot(HaveOccurred())
 }
 

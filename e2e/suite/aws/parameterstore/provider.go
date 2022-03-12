@@ -118,6 +118,9 @@ func (s *Provider) DeleteSecret(key string) {
 	_, err := s.client.DeleteParameter(&ssm.DeleteParameterInput{
 		Name: aws.String(key),
 	})
+	if _, ok := err.(*ssm.ParameterNotFound); ok {
+		return
+	}
 	Expect(err).ToNot(HaveOccurred())
 }
 

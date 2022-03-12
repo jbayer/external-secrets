@@ -42,6 +42,8 @@ type Provider interface {
 // SecretsClient provides access to secrets.
 type SecretsClient interface {
 	// GetSecret returns a single secret from the provider
+	// if GetSecret returns a error with type DeleteSecretError
+	// then the secret entry will be deleted depending on the deletionPolicy.
 	GetSecret(ctx context.Context, ref ExternalSecretDataRemoteRef) ([]byte, error)
 
 	// Validate checks if the client is configured correctly
@@ -55,4 +57,14 @@ type SecretsClient interface {
 	GetAllSecrets(ctx context.Context, ref ExternalSecretFind) (map[string][]byte, error)
 
 	Close(ctx context.Context) error
+}
+
+var DeleteSecretErr = DeleteSecretError{}
+
+// DeleteSecretError shall be returned when a GetSecret can not find the
+// desired secret. This is used for deletionPolicy.
+type DeleteSecretError struct{}
+
+func (DeleteSecretError) Error() string {
+	return "DeleteSecretError"
 }
